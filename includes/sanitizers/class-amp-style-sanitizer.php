@@ -2045,18 +2045,22 @@ class AMP_Style_Sanitizer extends AMP_Base_Sanitizer {
 					if ( '@' === substr( $stylesheet_part, 0, 1 ) ) {
 						$nested_level++;
 						$query[] = $stylesheet_part;
-					} elseif ( '}' === $stylesheet_part && ! empty( $query ) ) {
-						$nested_level--;
-						$query[] = $stylesheet_part;
-
-						if ( 0 === $nested_level ) {
-							if ( count( $query ) > 2 ) {
-								$stylesheet .= implode( '', $query );
-							}
-							unset( $query );
-						}
 					} else {
-						$stylesheet .= $stylesheet_part;
+						if( ! empty( $query ) ) {
+							$query[] = $stylesheet_part;
+							if ( '}' === substr( $stylesheet_part, 0, 1 ) ) {
+								$nested_level--;
+
+								if ( 0 === $nested_level ) {
+									if ( count( $query ) > 2 ) {
+										$stylesheet .= implode( '', $query );
+									}
+									unset( $query );
+								}
+							}
+						} else {
+							$stylesheet .= $stylesheet_part;
+						}
 					}
 					continue;
 				}
