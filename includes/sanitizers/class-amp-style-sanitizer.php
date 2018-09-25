@@ -2038,7 +2038,7 @@ class AMP_Style_Sanitizer extends AMP_Base_Sanitizer {
 		$final_size = 0;
 		$dom        = $this->dom;
 		foreach ( $stylesheet_set['pending_stylesheets'] as &$pending_stylesheet ) {
-			$stylesheet = '';
+			$stylesheet   = '';
 			$nested_level = 0;
 			foreach ( $pending_stylesheet['stylesheet'] as $stylesheet_part ) {
 				if ( is_string( $stylesheet_part ) ) {
@@ -2047,7 +2047,7 @@ class AMP_Style_Sanitizer extends AMP_Base_Sanitizer {
 						$query[] = $stylesheet_part;
 					} elseif ( '}' === $stylesheet_part && ! empty( $query ) ) {
 						$nested_level--;
-						$query[]     = $stylesheet_part;
+						$query[] = $stylesheet_part;
 
 						if ( 0 === $nested_level ) {
 							if ( count( $query ) > 2 ) {
