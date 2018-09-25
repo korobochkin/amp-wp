@@ -2046,7 +2046,7 @@ class AMP_Style_Sanitizer extends AMP_Base_Sanitizer {
 						$nested_level++;
 						$query[] = $stylesheet_part;
 					} else {
-						if( ! empty( $query ) ) {
+						if ( ! empty( $query ) ) {
 							$query[] = $stylesheet_part;
 							if ( '}' === substr( $stylesheet_part, 0, 1 ) ) {
 								$nested_level--;
