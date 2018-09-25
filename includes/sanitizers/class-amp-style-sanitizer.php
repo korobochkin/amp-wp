@@ -2039,16 +2039,22 @@ class AMP_Style_Sanitizer extends AMP_Base_Sanitizer {
 		$dom        = $this->dom;
 		foreach ( $stylesheet_set['pending_stylesheets'] as &$pending_stylesheet ) {
 			$stylesheet = '';
+			$nested_level = 0;
 			foreach ( $pending_stylesheet['stylesheet'] as $stylesheet_part ) {
 				if ( is_string( $stylesheet_part ) ) {
-					if ( '}' === $stylesheet_part && ! empty( $query ) ) {
-						if ( count( $query ) >= 2 ) {
-							$query[]     = $stylesheet_part;
-							$stylesheet .= implode( '', $query );
+					if ( '@' === substr( $stylesheet_part, 0, 1 ) ) {
+						$nested_level++;
+						$query[] = $stylesheet_part;
+					} elseif ( '}' === $stylesheet_part && ! empty( $query ) ) {
+						$nested_level--;
+						$query[]     = $stylesheet_part;
+
+						if ( 0 === $nested_level ) {
+							if ( count( $query ) > 2 ) {
+								$stylesheet .= implode( '', $query );
+							}
+							unset( $query );
 						}
-						unset( $query );
-					} elseif ( strpos( $stylesheet_part, '@media' ) !== false ) {
-						$query = array( $stylesheet_part );
 					} else {
 						$stylesheet .= $stylesheet_part;
 					}
