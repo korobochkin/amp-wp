@@ -2042,13 +2042,13 @@ class AMP_Style_Sanitizer extends AMP_Base_Sanitizer {
 			$nested_level = 0;
 			foreach ( $pending_stylesheet['stylesheet'] as $stylesheet_part ) {
 				if ( is_string( $stylesheet_part ) ) {
-					if ( '@' === substr( $stylesheet_part, 0, 1 ) ) {
+					if ( '@' === substr( $stylesheet_part, 0, 1 ) && '@font-face' !== substr( $stylesheet_part, 0, 10 ) ) {
 						$nested_level++;
 						$query[] = $stylesheet_part;
 					} else {
 						if ( ! empty( $query ) ) {
 							$query[] = $stylesheet_part;
-							if ( '}' === substr( $stylesheet_part, 0, 1 ) ) {
+							if ( '}' === substr( $stylesheet_part, -1, 1 ) ) {
 								$nested_level--;
 
 								if ( 0 === $nested_level ) {
